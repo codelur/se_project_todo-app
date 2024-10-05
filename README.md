@@ -1,6 +1,6 @@
 # Simple Todo App
 
-## GitHub Pagesl ink
+## GitHub Pages ink
 
 https://codelur.github.io/se_project_todo-app/
 
