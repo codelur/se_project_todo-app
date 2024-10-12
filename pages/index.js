@@ -4,6 +4,7 @@ import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import TodoCounter from "../components/TodoCounter.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoForm = document.forms["add-todo-form"];
@@ -20,11 +21,13 @@ const addTodoPopup = new PopupWithForm({
     const values = { name, date, id };
     const todo = generateTodo(values);
     section.addItem(todo);
+    handleDelete(true);
     todoFormValidator.resetValidation();
     addTodoPopup.close();
   },
 });
 addTodoPopup.setEventListeners();
+const todoCounter = new TodoCounter(initialTodos, ".counter__text");
 
 const section = new Section({
   items: initialTodos,
@@ -35,9 +38,17 @@ const section = new Section({
   containerSelector: ".todos__list",
 });
 
+function handleCheck(completed) {
+  todoCounter.updateCompleted(completed);
+}
+
+function handleDelete(added) {
+  todoCounter.updateTotal(added);
+}
+
 // The logic in this function should all be handled in the Todo class.
 const generateTodo = (data) => {
-  const todo = new Todo(data, "#todo-template");
+  const todo = new Todo(data, "#todo-template", handleCheck, handleDelete);
   const todoElement = todo.getView();
   return todoElement;
 };
@@ -46,29 +57,8 @@ addTodoButton.addEventListener("click", () => {
   addTodoPopup.open();
 });
 
-/*addTodoCloseBtn.addEventListener("click", () => {
-  addTodoPopup.close();
-});*/
-
 const todoFormValidator = new FormValidator(validationConfig, addTodoForm);
 todoFormValidator.enableValidation();
 
-/*addTodoForm.addEventListener("submit", (evt) => {
-  evt.preventDefault();
-  const name = evt.target.name.value;
-  const dateInput = evt.target.date.value;
-
-  // Create a date object and adjust for timezone
-  const date = new Date(dateInput);
-  date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-  const id = uuidv4();
-  const values = { name, date, id };
-
-  const todo = generateTodo(values);
-  section.addItem(todo);
-  //todosList.append(todo);
-  closeModal(addTodoPopup);
-  todoFormValidator.resetValidation();
-});*/
-
 section.renderItems();
+todoCounter._updateText();
