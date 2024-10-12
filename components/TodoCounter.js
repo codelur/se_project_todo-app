@@ -1,10 +1,8 @@
 class TodoCounter {
-  // todos should be the array of initial todos
-  // selector is the selector for the counter text element
   constructor(todos, selector) {
-    this._element = document.querySelector(selector); // select the appropriate element
-    this._completed = todos.filter((item) => item.completed === true).length; // number of completed todos
-    this._total = todos.length; // the total number of todos
+    this._element = document.querySelector(selector);
+    this._completed = todos.filter((item) => item.completed === true).length;
+    this._total = todos.length;
   }
 
   updateCompleted = (increment) => {
