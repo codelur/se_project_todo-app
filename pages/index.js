@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
-
 import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
@@ -12,17 +11,13 @@ const todosList = document.querySelector(".todos__list");
 
 const addTodoPopup = new PopupWithForm({
   popupSelector: "#add-todo-popup",
-  handleFormSubmit: (evt) => {
-    evt.preventDefault();
-    const name = evt.target.name.value;
-    const dateInput = evt.target.date.value;
-
+  handleFormSubmit: (formValues) => {
     // Create a date object and adjust for timezone
-    const date = new Date(dateInput);
+    const name = formValues["name"];
+    const date = new Date(formValues["date"]);
     date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
     const id = uuidv4();
     const values = { name, date, id };
-
     const todo = generateTodo(values);
     section.addItem(todo);
     todoFormValidator.resetValidation();
