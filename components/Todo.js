@@ -12,6 +12,7 @@ class Todo {
     });
     this._todoDeleteBtn.addEventListener("click", () => {
       this._todoElement.remove();
+      if (this._data.completed) this._handleCheck(false);
       this._handleDelete(false);
     });
   }
